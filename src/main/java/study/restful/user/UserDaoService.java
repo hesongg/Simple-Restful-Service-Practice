@@ -7,26 +7,25 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserDaoService {
 
-    private static final List<User> users = new ArrayList<>();
+    private static final List<Users> users = new ArrayList<>();
 
     private static int usersCount = 3;
 
     static {
-        users.add(new User(1, "John", LocalDateTime.now(), "pass1", "701010-1111111"));
-        users.add(new User(2, "Alice", LocalDateTime.now(), "pass2", "801010-1111111"));
-        users.add(new User(3, "Elena", LocalDateTime.now(), "pass2", "901010-1111111"));
+        users.add(new Users(1, "John", LocalDateTime.now(), "pass1", "701010-1111111"));
+        users.add(new Users(2, "Alice", LocalDateTime.now(), "pass2", "801010-1111111"));
+        users.add(new Users(3, "Elena", LocalDateTime.now(), "pass2", "901010-1111111"));
     }
 
-    public List<User> findAll() {
+    public List<Users> findAll() {
         return users;
     }
 
-    public User save(User user) {
+    public Users save(Users user) {
         if (user.getId() == null) {
             user.setId(++usersCount);
         }
@@ -36,20 +35,20 @@ public class UserDaoService {
         return user;
     }
 
-    public User findOne(int id) {
-        Optional<User> findUser = users.stream()
+    public Users findOne(int id) {
+        Optional<Users> findUser = users.stream()
                 .filter(user -> user.getId() == id)
                 .findAny();
 
         return findUser.orElse(null);
     }
 
-    public User deleteById(int id) {
+    public Users deleteById(int id) {
 
-        Iterator<User> userIterator = users.iterator();
+        Iterator<Users> userIterator = users.iterator();
 
         while (userIterator.hasNext()) {
-            User user = userIterator.next();
+            Users user = userIterator.next();
 
             if(user.getId() == id){
                 userIterator.remove();

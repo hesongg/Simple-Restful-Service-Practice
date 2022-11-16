@@ -21,21 +21,21 @@ public class UserController {
     private final UserDaoService service;
 
     @GetMapping("/users")
-    public List<User> retrieveAllUsers() {
+    public List<Users> retrieveAllUsers() {
         return service.findAll();
     }
 
     // GET /users/1 or /users/10 -> String -> int 로 컨버팅
     @GetMapping("/users/{id}")
-    public EntityModel<User> retrieveUser(@PathVariable int id) {
-        User user = service.findOne(id);
+    public EntityModel<Users> retrieveUser(@PathVariable int id) {
+        Users user = service.findOne(id);
 
         if (user == null) {
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
         }
 
         // HATEOAS
-        EntityModel<User> model = EntityModel.of(user);
+        EntityModel<Users> model = EntityModel.of(user);
 
         //링크 생성
         WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
@@ -47,8 +47,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User savedUser = service.save(user);
+    public ResponseEntity<Users> createUser(@Valid @RequestBody Users user) {
+        Users savedUser = service.save(user);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -60,7 +60,7 @@ public class UserController {
 
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable int id) {
-        User user = service.deleteById(id);
+        Users user = service.deleteById(id);
 
         if (user == null) {
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
